@@ -220,6 +220,11 @@ bot.on('callback_query', async (query) => {
   bot.answerCallbackQuery(query.id); // Ответ на callback_query
 });
 
+bot.onText(/\/support/, (msg) => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, "По всем вопросам вы можете обратиться к @theYernar (24/7), @thembrk")
+})
+
 
 // Запуск сервера
 app.listen(port, () => {
