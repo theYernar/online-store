@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/styles/style.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="/js/script.js"> </script>
+    <title>Магазин</title>
+</head>
+<body>
+    <div class="AppBar">
+        <p>Магазин</p>
+    </div>
+
+    <% if (products.length === 0) { %>
+        <div class="no-product">
+            <h3>Нет товара</h3>
+            <img width="100px" src="icons/zero.png" alt="zero">
+        </div>
+    <% } %>
+    
+    <div class="container">
+            <% products.forEach(product => { 
+                const images = product.images.split(','); // Разбиваем строку с изображениями на массив
+            %>
+                <div class="product-box">
+                    <div class="container-img">
+                        <img src="<%= images[images.length - 1]%>" class="card-img-top" alt="<%= product.name %>">
+                    </div>
+                    <h5 class="card-title"><%= product.name %></h5>
+                    <p class="card-text">Цена: <%= product.price %> ₸</p>
+                    <button class="select-btn" onclick="openModal('<%= product.images %>', '<%= product.name %>', '<%= product.price %> ₸')">Выбрать</button>
+                </div>
+            <% }); %>   
+        </div>
+
+        <div id="cart-container">
+            <h3>Корзина</h3>
+            <ul id="cart-list"></ul>
+            <p id="cart-total"></p>
+        </div>
+
+        <div class="footer">
+            <button class="checkout-btn" onclick="sendCartToTelegram()">Продолжить</button>
+        </div>
+        
+    
+    <%- include('selectProductModal') %>
+</body>
+</html>

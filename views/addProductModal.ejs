@@ -1,0 +1,26 @@
+<div id="product-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeProductModal()">&times;</span>
+        <h2>Добавить товар</h2>
+        <form action="/add-product" method="POST" enctype="multipart/form-data" onsubmit="showLoadingSpinner()">
+            <div class="form-group">
+                <label for="name">Название:</label> <br>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Цена:</label> <br>
+                <input type="number" class="form-control" id="price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="images">Изображения:</label>
+                <input type="file" class="form-control" id="images" name="images" accept="image/*" multiple required>
+            </div>            
+        
+            <button type="submit" class="btn-primary" id="submit-btn">Добавить товар</button>
+            <div id="loading-spinner" style="display:none;">
+                <img src="/icons/spinner.gif" alt="loading" style="width: 50px;">
+            </div>
+        </form>
+        
+    </div>
+</div>    

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/styles/style.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="/js/script.js"> </script>
+    <title>Магазин</title>
+</head>
+<body>
+    <div class="AppBar">
+        <p>Магазин</p>
+    </div>
+
+    <% if (products.length === 0) { %>
+        <div class="no-product">
+            <h3>Нет товара</h3>
+            <img width="100px" src="icons/zero.png" alt="zero">
+        </div>
+    <% } %>
+
+    <div class="container">
+        <% products.forEach(product => { 
+            const images = product.images.split(','); // Разбиваем строку с изображениями в массив
+        %>
+            <div class="product-box">
+                <div class="container-img">
+                    <div class="swiper-container">
+                        <img src="<%= images[images.length - 1]%>" class="card-img-top" alt="<%= product.name %>">                
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <h5 class="card-title"><%= product.name %></h5>
+                    <p class="card-text">Цена: <%= product.price %> ₸</p>
+                    <form action="/delete-product/<%= product.id %>" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить этот товар?');">
+                        <button type="submit" class="delete-btn">Удалить</button>
+                    </form>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+
+    <div class="add-btn-div">
+        <button class="add-btn" onclick="openAddProductModal()"> 
+            <img src="/icons/add-icon.png" alt="add-icon">
+        </button>       
+    </div>
+    
+    <%- include('addProductModal') %>
+
+</body>
+</html>
