@@ -225,8 +225,23 @@ bot.onText(/\/support/, (msg) => {
   bot.sendMessage(chatId, "По всем вопросам вы можете обратиться к @theYernar (24/7), @thembrk")
 })
 
+bot.onText(/\/store/, (msg) => {
+  const chatId = msg.chat.id;
+  const keyboard = {
+    inline_keyboard: [
+      [
+        {
+          text: 'Открыть магазин',
+          web_app: { url: `${URL}?chatId=${chatId}` }
+        },
+      ]
+    ]
+  };
+
+  bot.sendMessage(chatId, "Наш магазин👇", {reply_markup: keyboard})
+})
 
 // Запуск сервера
 app.listen(port, () => {
-  console.log("Сервер запущен на http://localhost:${port}");
+  console.log(`Сервер запущен на http://localhost:${port}`);
 });
