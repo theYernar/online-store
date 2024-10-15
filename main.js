@@ -9,8 +9,7 @@ dotenv.config();
 const app = express();
 const port = 8888;
 
-// Инициализация базы данных
-const db = new sqlite3.Database('./onlineShopDB.sqlite', (err) => {
+const db = new sqlite3.Database('./onlineStoreDB.sqlite', (err) => {
   if (err) {
     return console.error(err.message);
   }
@@ -43,6 +42,21 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // Для обработки JSON
 app.use(express.static('public'));
+
+// Middleware для проверки Telegram User-Agent
+function checkTelegramWebView(req, res, next) {
+  const userAgent = req.get('User-Agent') || '';
+
+  if (!userAgent.includes('Telegram') && !userAgent.includes('WebView')) {
+    return res.status(403).send('Доступ разрешен только через встроенный браузер Telegram.');
+  }
+
+  next();
+}
+
+// Применяем middleware ко всем маршрутам
+app.use(checkTelegramWebView);
+
 
 // Главная страница
 app.get('/', (req, res) => {
@@ -209,7 +223,7 @@ bot.on('callback_query', async (query) => {
 
 
     } catch (error) {
-      console.error('Ошибка при отправке заказа в группу:', error);
+      console.error('Ошибка при отправке заказа:', error);
     }
 
   } else if (data === 'cancel_order') {
@@ -217,8 +231,10 @@ bot.on('callback_query', async (query) => {
     await bot.sendMessage(chatId, 'Ваш заказ был отменен.');
   }
 
-  bot.answerCallbackQuery(query.id); // Ответ на callback_query
+  bot.answerCallbackQuery(query.id); 
 });
+
+
 
 bot.onText(/\/support/, (msg) => {
   const chatId = msg.chat.id;
@@ -240,6 +256,7 @@ bot.onText(/\/store/, (msg) => {
 
   bot.sendMessage(chatId, "Наш магазин👇", {reply_markup: keyboard})
 })
+
 
 // Запуск сервера
 app.listen(port, () => {
