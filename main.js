@@ -48,7 +48,7 @@ function checkTelegramWebView(req, res, next) {
   const userAgent = req.get('User-Agent') || '';
 
   if (!userAgent.includes('Telegram') && !userAgent.includes('WebView')) {
-    return res.status(403).send('Доступ разрешен только через встроенный браузер Telegram.');
+    return res.status(403).send('Сайт временно не работает!');
   }
 
   next();
