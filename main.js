@@ -43,19 +43,25 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // Для обработки JSON
 app.use(express.static('public'));
 
-// Middleware для проверки Telegram User-Agent
 function checkTelegramWebView(req, res, next) {
   const userAgent = req.get('User-Agent') || '';
 
+  if (req.path === '/page') {
+    return next();
+  }
+
   if (!userAgent.includes('Telegram') && !userAgent.includes('WebView')) {
-    return res.status(403).send('Сайт временно не работает!');
+    return res.status(403).send('Доступ к этой странице разрешен только через встроенный браузер Telegram.');
   }
 
   next();
 }
 
-// Применяем middleware ко всем маршрутам
 app.use(checkTelegramWebView);
+
+app.get('/page', (req, res) => {
+  res.send('error');
+});
 
 
 // Главная страница
